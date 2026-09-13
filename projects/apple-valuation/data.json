@@ -1,0 +1,21 @@
+{
+  "company": "Apple Inc.",
+  "units": "USD millions; shares in millions; rates as decimals",
+  "basis": "FY2025 fiscal-year-end reference model using financial results released October 30, 2025. Not a contemporaneous backtest or current price target.",
+  "sources": {
+    "S25": {"url":"https://www.apple.com/newsroom/pdfs/fy2025-q4/FY25_Q4_Consolidated_Financial_Statements.pdf","released":"2025-10-30","description":"Apple FY2025 Q4 condensed consolidated financial statements (unaudited); use twelve-month columns"},
+    "S24": {"url":"https://www.apple.com/newsroom/pdfs/fy2024-q4/FY24_Q4_Consolidated_Financial_Statements.pdf","released":"2024-10-31","description":"Apple FY2024 Q4 condensed consolidated financial statements (unaudited); use twelve-month columns"}
+  },
+  "field_pages": {"products":1,"services":1,"revenue":1,"product_cost":1,"service_cost":1,"gross_profit":1,"opex":1,"ebit":1,"pretax":1,"tax":1,"net_income":1,"iphone":1,"mac":1,"ipad":1,"wearables":1,"china":1,"cash":2,"securities_current":2,"securities_noncurrent":2,"commercial_paper":2,"debt_current":2,"debt_noncurrent":2,"shares":2,"assets":2,"liabilities":2,"equity":2,"da":3,"cfo":3,"capex":3,"sbc":3},
+  "history": [
+    {"year":2023,"end":"2023-09-30","source":"S24","products":298085,"services":85200,"revenue":383285,"product_cost":189282,"service_cost":24855,"gross_profit":169148,"opex":54847,"ebit":114301,"pretax":113736,"tax":16741,"net_income":96995,"iphone":200583,"mac":29357,"ipad":28300,"wearables":39845,"china":72559,"cash":29965,"securities_current":31590,"securities_noncurrent":100544,"commercial_paper":5985,"debt_current":9822,"debt_noncurrent":95281,"shares":15550.061,"assets":352583,"liabilities":290437,"equity":62146,"da":11519,"cfo":110543,"capex":10959,"sbc":10833},
+    {"year":2024,"end":"2024-09-28","source":"S25","products":294866,"services":96169,"revenue":391035,"product_cost":185233,"service_cost":25119,"gross_profit":180683,"opex":57467,"ebit":123216,"pretax":123485,"tax":29749,"net_income":93736,"iphone":201183,"mac":29984,"ipad":26694,"wearables":37005,"china":66952,"cash":29943,"securities_current":35228,"securities_noncurrent":91479,"commercial_paper":9967,"debt_current":10912,"debt_noncurrent":85750,"shares":15116.786,"assets":364980,"liabilities":308030,"equity":56950,"da":11445,"cfo":118254,"capex":9447,"sbc":11688},
+    {"year":2025,"end":"2025-09-27","source":"S25","products":307003,"services":109158,"revenue":416161,"product_cost":194116,"service_cost":26844,"gross_profit":195201,"opex":62151,"ebit":133050,"pretax":132729,"tax":20719,"net_income":112010,"iphone":209586,"mac":33708,"ipad":28023,"wearables":35686,"china":64377,"cash":35934,"securities_current":18763,"securities_noncurrent":77723,"commercial_paper":7979,"debt_current":12350,"debt_noncurrent":78328,"shares":14773.260,"assets":359241,"liabilities":285508,"equity":73733,"da":11698,"cfo":111482,"capex":12715,"sbc":12863}
+  ],
+  "normalization": {"FY2024_tax_charge":10246,"FY2024_adjusted_net_income":103982,"source":"S25","page":4},
+  "presets": {
+    "Base":{"product_growth":0.04,"service_growth":0.10,"product_margin":0.3677,"service_margin":0.7541,"opex_ratio":0.1493,"tax_rate":0.16,"da_ratio":0.0281,"capex_ratio":0.031,"nwc_increment":0.01,"wacc":0.09,"terminal_growth":0.025,"terminal_roic":0.25},
+    "Upside":{"product_growth":0.06,"service_growth":0.13,"product_margin":0.38,"service_margin":0.77,"opex_ratio":0.145,"tax_rate":0.16,"da_ratio":0.0281,"capex_ratio":0.031,"nwc_increment":0.01,"wacc":0.09,"terminal_growth":0.025,"terminal_roic":0.25},
+    "Downside":{"product_growth":0.00,"service_growth":0.06,"product_margin":0.35,"service_margin":0.73,"opex_ratio":0.155,"tax_rate":0.16,"da_ratio":0.0281,"capex_ratio":0.031,"nwc_increment":0.01,"wacc":0.09,"terminal_growth":0.025,"terminal_roic":0.25}
+  }
+}
