@@ -1,0 +1,80 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#12233d"><title>Credit risk modeling for card payment default — Zhouyue Ma</title><meta name="description" content="Four model comparisons, an ablation on repayment history and the business cost of missed risk versus false alerts."><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="stylesheet" href="/assets/site.css"></head><body><a class="skip" href="#main">Skip to content</a><header class="mast"><nav class="wrap nav" aria-label="Main navigation"><a class="brand" href="/">Zhouyue Ma<span aria-hidden="true" style="color:#315de6">.</span></a><div class="navlinks"><a href="/" >Home</a><a href="/projects/" class="active" aria-current="page">Projects</a><a class="contact" href="mailto:mazhouyue@outlook.com">Get in touch</a></div></nav></header><main id="main"><div class="wrap"><header class="article-head"><p class="breadcrumb"><a href="/projects/">Projects</a> / Machine learning · Financial analytics</p><div class="eyebrow">Case study</div><h1>Credit risk modeling for card payment default</h1><p class="dek">Four model comparisons, an ablation on repayment history and the business cost of missed risk versus false alerts.</p><div class="tags"><span>Python</span><span>Classification</span><span>Random Forest</span><span>Risk Analytics</span></div></header><div class="article expanded"><article>
+<section class="tech-case" aria-labelledby="credit-tech-title">
+  <div class="tech-eyebrow">Technical case · Original project + portfolio decision exercise</div>
+  <h2 id="credit-tech-title">From ranking risk to choosing an action</h2>
+  <p class="tech-intro">I compared a class-weighted logistic regression with a class-weighted random forest on all available features and on repayment history alone. The substantive result is a trade-off: the full forest was more precise, while the full logistic model caught more defaults at its reported operating point.</p>
+  <div class="tech-facts"><div><b>30,000</b><span>clients · Taiwan, 2005</span></div><div><b>22.12%</b><span>observed default prevalence</span></div><div><b>4</b><span>reported model / feature-set combinations</span></div></div>
+  <h3>01 / Pipeline and evaluation</h3>
+  <div class="method-grid"><div><b>Inspect + encode</b><p>Drop client ID, reconcile ambiguous category codes, check missing values and financial-variable distributions.</p></div><div><b>Compare feature sets</b><p>Use both the full feature set and the six repayment-status columns (PAY_0, PAY_2–PAY_6) alone to measure how much repayment status explains.</p></div><div><b>Evaluate the minority class</b><p>Read precision, recall and F1 alongside ROC-AUC; an always-non-default classifier would be misleading on an imbalanced sample.</p></div></div>
+  <h3>02 / Original results</h3>
+  <div class="results-table"><table><caption>Figures reported in the final team presentation; positive class = default</caption><thead><tr><th scope="col">Model</th><th scope="col">Precision</th><th scope="col">Recall</th><th scope="col">F1</th><th scope="col">ROC-AUC</th></tr></thead><tbody><tr><th scope="row">Random forest · all features</th><td>0.6513</td><td>0.3406</td><td>0.4473</td><td>0.7602</td></tr><tr><th scope="row">Random forest · PAY only</th><td>0.4923</td><td>0.5268</td><td>0.5089</td><td>0.7249</td></tr><tr><th scope="row">Logistic regression · all features</th><td>0.3676</td><td>0.6330</td><td>0.4651</td><td>0.7106</td></tr><tr><th scope="row">Logistic regression · PAY only</th><td>0.4739</td><td>0.5335</td><td>0.5019</td><td>0.6853</td></tr></tbody></table></div>
+  <div class="model-visual"><div><b>Read the trade-off</b><p>Each bar is a metric reported in the original slides, displayed on a common 0–1 scale. Select a metric to see the feature-set comparison.</p></div><label for="credit-metric">Compare <select id="credit-metric"><option value="precision">Precision</option><option value="recall">Recall</option><option value="f1">F1</option><option value="auc">ROC-AUC</option></select></label><div id="credit-bars" class="model-bars" aria-live="polite">The metric view loads when JavaScript is available.</div></div>
+  <p>PAY-only forest ROC-AUC was 0.0353 below the full forest. That supports a specific ablation finding: past payment status carries much of the predictive signal, with additional features improving ranking somewhat. It does not by itself select the best review policy.</p>
+  <h3>03 / Portfolio extension: review-cost explorer</h3>
+  <p>Choose how costly a missed default is relative to an unnecessary review. This calculator converts the <em>reported, rounded</em> precision and recall into approximate counts for a hypothetical 1,000-client sample with the original 22.12% default rate. It compares the four <em>reported operating points</em>; it does not tune a new threshold or retrain the models.</p>
+  <div class="tech-control"><label for="miss-cost">Cost of one missed default: <strong><output id="miss-cost-out">5</output> review units</strong></label><input id="miss-cost" type="range" min="1" max="20" value="5"><p>One unnecessary review = 1 unit. Lower total is preferable under the selected assumption.</p></div>
+  <div class="cost-chart"><svg id="credit-cost-chart" viewBox="0 0 820 390" role="img" aria-label="Estimated review cost for four reported model operating points as the cost of missing a default changes"><text x="30" y="40">Enable JavaScript to view cost curves.</text></svg><div id="credit-cost-legend" class="cost-legend"></div></div>
+  <div id="credit-decision" class="results-table" aria-live="polite">The comparison loads when JavaScript is available.</div>
+  <p class="tech-note">Approximation: TP = 1,000 × 0.2212 × recall; FN = 221.2 − TP; FP = TP × (1 / precision − 1); total cost = missed-default cost × FN + FP. Rounded source metrics and an assumed prevalence make the counts illustrative.</p>
+  <h3>04 / Reproduce the calculation</h3>
+  <p>The code below is a new portfolio analysis of the four reported operating points. It does not retrain models or substitute for the original training code, which was not supplied with the presentation.</p>
+  <pre class="code-window"><code>prevalence, sample_size = 0.2212, 1000
+tp = sample_size * prevalence * recall
+fn = sample_size * prevalence - tp
+fp = tp * (1 / precision - 1)
+review_cost = missed_default_cost * fn + fp</code></pre>
+  <div class="link-row"><a class="link-button secondary" href="https://zhouyue-ma-portfolio.aus6ve.chatgpt.site/assets/credit-risk-metrics.py" download>Download reproducible Python analysis ↗</a></div>
+  <div class="tech-judgment"><b>Interpretation boundary</b><p>A one-year Taiwan sample does not establish how the models perform on current applicants in another market. Calibration, fairness evaluation, cost-based threshold selection and drift monitoring would need new data. The figures above do not imply that those steps were performed in the course project.</p></div>
+  <div class="link-row"><a class="link-button secondary" href="https://zhouyue-ma-portfolio.aus6ve.chatgpt.site/assets/credit-risk-original-presentation.pdf" target="_blank" rel="noopener noreferrer">Original 33-slide evidence (PDF) ↗</a></div>
+</section>
+<script>
+(() => {
+  const slider = document.getElementById('miss-cost'), out = document.getElementById('miss-cost-out'), panel = document.getElementById('credit-decision');
+  const bars = document.getElementById('credit-bars'), metric = document.getElementById('credit-metric');
+  const plot = document.getElementById('credit-cost-chart'), legend = document.getElementById('credit-cost-legend');
+  if (!slider || !panel) return;
+  const models = [
+    {name:'Forest · all features', precision:.6513, recall:.3406, f1:.4473, auc:.7602, color:'#315de6'},
+    {name:'Forest · PAY only', precision:.4923, recall:.5268, f1:.5089, auc:.7249, color:'#6991de'},
+    {name:'Logistic · all features', precision:.3676, recall:.6330, f1:.4651, auc:.7106, color:'#0c8278'},
+    {name:'Logistic · PAY only', precision:.4739, recall:.5335, f1:.5019, auc:.6853, color:'#6ab5ad'}
+  ];
+  function outcomes(m) {
+    const tp = 221.2 * m.recall, fn = 221.2 - tp, fp = tp * (1 / m.precision - 1);
+    return {name:m.name, fn, fp, cost:Number(slider.value)*fn+fp};
+  }
+  function renderBars() {
+    const field=metric.value;
+    bars.innerHTML=models.map(m=>'<div class="model-bar-row"><span>'+m.name+'</span><div class="model-bar-track"><i style="width:'+(100*m[field]).toFixed(2)+'%;background:'+m.color+'"></i></div><strong>'+m[field].toFixed(3)+'</strong></div>').join('');
+  }
+  function renderPlot() {
+    const selected=Number(slider.value), left=64, top=26, width=706, height=290;
+    const max=Math.max(...models.map(m=>{const v=outcomes(m);return 20*v.fn+v.fp;}))*1.04;
+    const x=c=>left+(c-1)/19*width, y=v=>top+height-v/max*height;
+    let svg='<rect x="0" y="0" width="820" height="390" fill="white"/>';
+    for(const tick of [0,.25,.5,.75,1]) {const yy=y(max*tick);svg+='<line x1="'+left+'" y1="'+yy+'" x2="'+(left+width)+'" y2="'+yy+'" stroke="#e2eaf2"/><text x="'+(left-10)+'" y="'+(yy+5)+'" text-anchor="end" font-size="13" fill="#53647b">'+Math.round(max*tick)+'</text>';}
+    for(const tick of [1,5,10,15,20]) svg+='<text x="'+x(tick)+'" y="'+(top+height+25)+'" text-anchor="middle" font-size="13" fill="#53647b">'+tick+'</text>';
+    svg+='<text x="'+(left+width/2)+'" y="370" text-anchor="middle" font-size="14" fill="#12233d">Missed-default cost / unnecessary-review cost</text>';
+    for(const m of models) {const v=outcomes(m);const line='M '+x(1).toFixed(1)+' '+y(v.fn+v.fp).toFixed(1)+' L '+x(20).toFixed(1)+' '+y(20*v.fn+v.fp).toFixed(1);svg+='<path d="'+line+'" fill="none" stroke="'+m.color+'" stroke-width="3"/><circle cx="'+x(selected).toFixed(1)+'" cy="'+y(v.cost).toFixed(1)+'" r="6" fill="'+m.color+'" stroke="white" stroke-width="2"/>';}
+    svg+='<line x1="'+x(selected)+'" y1="'+top+'" x2="'+x(selected)+'" y2="'+(top+height)+'" stroke="#68798c" stroke-dasharray="5 5"/>';
+    plot.innerHTML=svg;
+    legend.innerHTML=models.map(m=>'<span><i style="background:'+m.color+'"></i>'+m.name+'</span>').join('');
+  }
+  function update() {
+    const cost = Number(slider.value); out.textContent = cost;
+    const rows = models.map(outcomes).sort((a,b) => a.cost-b.cost);
+    panel.innerHTML = '<table><caption>Estimated outcomes per 1,000 clients · ranked by illustrative cost</caption><thead><tr><th scope="col">Reported model</th><th scope="col">Missed defaults</th><th scope="col">Unnecessary reviews</th><th scope="col">Total cost units</th></tr></thead><tbody>' +
+      rows.map(r => '<tr><th scope="row">' + r.name + '</th><td>' + r.fn.toFixed(0) + '</td><td>' + r.fp.toFixed(0) + '</td><td>' + r.cost.toFixed(0) + '</td></tr>').join('') + '</tbody></table>';
+    renderPlot();
+  }
+  slider.addEventListener('input', update);metric.addEventListener('change',renderBars);renderBars();update();
+})();
+</script>
+<section class="supplemental-evidence" aria-label="Additional original figures"><h3>Additional original figures</h3>
+      <p>Selected original evidence for the preparation, repayment-history pattern and model interpretation. The complete presentation is linked above.</p>
+      <div class="visual-gallery">
+        <figure class="figure"><a href="https://zhouyue-ma-portfolio.aus6ve.chatgpt.site/assets/credit-risk-slide-09.png" target="_blank" rel="noopener noreferrer"><img src="https://zhouyue-ma-portfolio.aus6ve.chatgpt.site/assets/credit-risk-slide-09.png" alt="Original cleaning workflow and code excerpt" loading="lazy"></a><figcaption>Preparation · recoding and data checks</figcaption></figure>
+        <figure class="figure"><a href="https://zhouyue-ma-portfolio.aus6ve.chatgpt.site/assets/credit-risk-slide-15.png" target="_blank" rel="noopener noreferrer"><img src="https://zhouyue-ma-portfolio.aus6ve.chatgpt.site/assets/credit-risk-slide-15.png" alt="Original repayment status charts across six months" loading="lazy"></a><figcaption>Exploration · six months of repayment status</figcaption></figure>
+        <figure class="figure"><a href="https://zhouyue-ma-portfolio.aus6ve.chatgpt.site/assets/credit-risk-slide-25.png" target="_blank" rel="noopener noreferrer"><img src="https://zhouyue-ma-portfolio.aus6ve.chatgpt.site/assets/credit-risk-slide-25.png" alt="Original classification reports for the two full-feature models" loading="lazy"></a><figcaption>Evaluation · original classification reports</figcaption></figure>
+        <figure class="figure"><a href="https://zhouyue-ma-portfolio.aus6ve.chatgpt.site/assets/credit-risk-slide-28.png" target="_blank" rel="noopener noreferrer"><img src="https://zhouyue-ma-portfolio.aus6ve.chatgpt.site/assets/credit-risk-slide-28.png" alt="Original coefficient and feature-importance comparisons" loading="lazy"></a><figcaption>Interpretation · coefficients and feature importance</figcaption></figure>
+      </div></section><div class="link-row"><a class="link-button" href="/projects/">Explore other projects</a><a class="link-button secondary" href="mailto:mazhouyue@outlook.com">Contact me</a></div></article><aside class="side" aria-label="Project information"><div class="k">My role</div><p>Project lead in a three-person team. I led much of the analysis and presentation; the original project credits Zhouyue Ma, Ziqi Tan and Tina Jose.</p><div class="k">Dataset</div><p>Default of Credit Card Clients; 30,000 client records from Taiwan, 2005.</p><div class="k">Methods</div><p>Data quality checks, exploratory analysis, logistic regression, random forest, class weighting and model comparison.</p></aside></div></div></main><footer class="footer"><div class="wrap"><span>© 2026 Zhouyue Ma · Charlottesville, Virginia</span><span><a href="mailto:mazhouyue@outlook.com">mazhouyue@outlook.com</a></span></div></footer></body></html>
