@@ -76,13 +76,13 @@ a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{o
 .homepage .project-proof strong{font-size:1.15rem;color:var(--ink);font-weight:600}
 .homepage .project-proof span{font-size:.77rem;font-weight:400}
 .homepage .project-card .bottom{border-top:1px solid var(--line);padding-top:16px;gap:12px;font-size:.77rem;align-items:center}
-.homepage .project-5{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);background:#fff}
-.homepage .project-5 .project-preview{height:100%;min-height:350px!important;border:0;background:#173941!important;align-items:center!important}
-.homepage .project-5 .project-preview>span{padding:38px!important}
-.homepage .project-5 .project-preview strong{font:400 3.3rem/1.06 Georgia,serif!important;margin:24px 0!important}
-.homepage .project-5 .project-card-body{padding:36px 40px}
-.homepage .project-5 h3{font-size:2rem}
-.homepage .project-5 .project-number{color:var(--teal)}
+.homepage .project-1{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);background:#fff}
+.homepage .project-1 .project-preview{height:100%;min-height:350px!important;border:0;background:#173941!important;align-items:center!important}
+.homepage .project-1 .project-preview>span{padding:38px!important}
+.homepage .project-1 .project-preview strong{font:400 3.3rem/1.06 Georgia,serif!important;margin:24px 0!important}
+.homepage .project-1 .project-card-body{padding:36px 40px}
+.homepage .project-1 h3{font-size:2rem}
+.homepage .project-1 .project-number{color:var(--teal)}
 .homepage .about-home{background:#edf0e9;color:var(--ink);border:0;border-radius:18px;padding:38px 42px;margin:65px 0 0}
 .homepage .about-home:after{content:none}
 .homepage .about-home .eyebrow,.homepage .about-home h2{color:var(--ink)}
@@ -110,8 +110,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{o
 @media(max-width:850px){
  .personal-hero{gap:35px;padding-top:48px;grid-template-columns:minmax(0,1.2fr) minmax(210px,.8fr)}
  .personal-hero h1{font-size:4rem}.personal-lead{font-size:1.1rem}
- .homepage .project-5 .project-card-body{padding:28px}
- .homepage .project-5 .project-preview strong{font-size:2.8rem!important}
+ .homepage .project-1 .project-card-body{padding:28px}
+ .homepage .project-1 .project-preview strong{font-size:2.8rem!important}
  .experience-list{grid-template-columns:1fr;gap:0}.experience-list article+article{border-top:1px solid var(--line)}
 }
 @media(max-width:620px){
@@ -127,13 +127,13 @@ a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{o
  .home-facts strong{font-size:.82rem}.home-facts small{font-size:.71rem}
  .project-jump{gap:10px 16px;margin-bottom:22px}.project-jump a{font-size:.77rem}
  .homepage .grid{grid-template-columns:1fr;gap:22px}
- .homepage .project-5{grid-column:auto;display:flex}
- .homepage .project-5 .project-preview{height:235px;min-height:235px!important}
- .homepage .project-5 .project-preview>span{padding:25px!important;width:100%}
- .homepage .project-5 .project-preview strong{font-size:2.7rem!important;margin:15px 0!important}
+ .homepage .project-1{grid-column:auto;display:flex}
+ .homepage .project-1 .project-preview{height:235px;min-height:235px!important}
+ .homepage .project-1 .project-preview>span{padding:25px!important;width:100%}
+ .homepage .project-1 .project-preview strong{font-size:2.7rem!important;margin:15px 0!important}
  .homepage .project-preview{height:205px}
- .homepage .project-card-body,.homepage .project-5 .project-card-body{padding:24px}
- .homepage .project-5 h3,.homepage .project-card h3{font-size:1.6rem}
+ .homepage .project-card-body,.homepage .project-1 .project-card-body{padding:24px}
+ .homepage .project-1 h3,.homepage .project-card h3{font-size:1.6rem}
  .homepage .project-card .bottom{flex-wrap:wrap}
  .homepage .about-home{padding:28px 24px;margin:38px 0 0}
  .homepage .about-layout{grid-template-columns:1fr;gap:8px}
